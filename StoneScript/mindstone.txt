@@ -1,0 +1,21 @@
+/*
+Copyright © 2019-2022, Matjaž Guštin
+<dev@matjaz.it> <https://matjaz.it>
+Released under the BSD 3-clause license.
+
+FOR GAME VERSION v3.14.2 as of 2022-04-25
+
+Keep lines at 48 characters at most, because
+that is the line length of the mind stone UI
+within the game.
+*/
+
+import fishing
+import my/00_rocky_plateau
+import my/01_deadwood_canyon
+import my/02_caves_of_fear
+import my/03_mushroom_forest
+import my/04_haunted_halls
+import my/05_boiling_mine
+import my/06_icy_ridge
+import my/07_temple

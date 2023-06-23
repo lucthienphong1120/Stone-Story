@@ -1,0 +1,66 @@
+/*
+Copyright © 2019-2022, Matjaž Guštin
+<dev@matjaz.it> <https://matjaz.it>
+Released under the BSD 3-clause license.
+
+Level: Boiling Mine
+*/
+
+var loadouts = import my/loadouts
+
+func equip_melee()
+  equipL sword *9 aether
+  equipR shield *10 aether +3
+
+func equip_dps()
+  equipL sword *9 aether
+  equipR sword *10
+
+func equip_dashing()
+  equipL sword *9 aether
+  equipR shield *10 dashing
+
+func equip_ranged_healing()
+  equipL crossbow *10
+  equipR ouroboros
+  
+func equip_ranged_shield()
+  equipL crossbow *10
+  equipR shield *10 aether +3
+
+func equip_armor_piercing()
+  equipL warhammer *10 poison +5
+  equipR warhammer *10 +8
+
+?loc = mine
+  // Small enemies
+  ?foe = master
+  ^ | foe = elemental
+  ^ | foe = geyser
+  ^ | foe = walker
+    ?foe.distance > 8
+      equip_dashing()
+    :?foe.armor > 0
+      equip_armor_piercing()
+    :
+      equip_melee()
+  :?hp < 10
+    activate potion
+  loadouts.healwalk()
+
+?loc = bronze_guardian
+  ?time > 600 & foe.distance > 10
+    // Guardian is now attackable from afar
+    equip_ranged_shield()
+  ?pos.y > 0 & foe.distance > 5
+    // Guardian hits, we jump on its hand
+    equip_dashing()
+  :?foe.distance <= 5
+    // We are on its arm, close to its face
+    ?foe.armor > 0
+      equip_armor_piercing()
+    :
+      equip_dps()
+  :?hp < 10
+    activate potion
+  loadouts.healwalk()

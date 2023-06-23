@@ -1,0 +1,26 @@
+/*
+Copyright © 2019-2022, Matjaž Guštin
+<dev@matjaz.it> <https://matjaz.it>
+Released under the BSD 3-clause license.
+
+Sets of weapons abstracted away as nicely
+named functions.
+*/
+
+// Place this function at the default case
+// of any switch-case
+func healwalk()
+  // Pick up materials quickly with Star stone
+  ?pickup.distance < 10
+    equipL star
+    equipR shield *10
+  // Heal and gain armor while just walking
+  // towards next objective. If 100% healed,
+  // walk faster.
+  :?target = waypoint | foe.distance > 22
+    ?hp < maxhp
+      equipL ouroboros
+      equipR shield *10
+    :
+      equipL triskelion
+      equipR shield *10

@@ -1,0 +1,51 @@
+/*
+Copyright © 2019-2022, Matjaž Guštin
+<dev@matjaz.it> <https://matjaz.it>
+Released under the BSD 3-clause license.
+
+Level: Deadwood canyon
+*/
+
+var loadouts = import my/loadouts
+
+func equip_melee()
+  equipL sword *10
+  equipR shield *10 poison
+
+func equip_dashing()
+  equipL sword *10
+  equipR shield *10 dashing
+
+func equip_ranged_healing()
+  equipL crossbow *10
+  equipR ouroboros
+
+func equip_ranged()
+  equip repeating crossbow *10
+
+?loc = deadwood
+  // Small enemies
+  ?foe = mosquito
+    ?foe.distance >= 5
+      equip_ranged()
+    :
+      equip_melee()
+  :?foe = scarab
+    equip_melee()
+  :?foe = boss | foe = poena
+    // Boss: Xyaloalgia, residue of Leuce
+    // and Poena, its phase 2
+    ?foe.distance >= 8
+      equip_dashing()
+    :
+      equip_melee()
+  ?hp <= 10
+    activate potion
+  loadouts.healwalk()
+  ?harvest.distance < 10
+    // Cut down trees with the hatchet
+    // using the fast-cutting when available
+    equip hatchet
+    ?harvest.distance <= 4
+    ^& item.GetCooldown("hatchet") <= 0
+      activate R

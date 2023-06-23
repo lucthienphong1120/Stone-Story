@@ -1,0 +1,54 @@
+/*
+Copyright © 2019-2022, Matjaž Guštin
+<dev@matjaz.it> <https://matjaz.it>
+Released under the BSD 3-clause license.
+
+Level: Mushroom Forest
+*/
+
+var loadouts = import my/loadouts
+
+func equip_melee()
+  equipL sword *10 +7
+  equipR shield *10 poison
+
+func equip_armor_piercing()
+  equipL warhammer *10 poison +5
+  equipR warhammer *10 +8
+
+func equip_dashing()
+  equipL sword *10
+  equipR shield *10 dashing
+
+func equip_staff()
+  equip staff *10 poison
+
+func equip_ranged_healing()
+  equipL crossbow *10
+  equipR ouroboros
+
+?loc = fungus_forest
+  ?hp = maxhp | foe.distance <= 23
+    // Healed completely or enemy too close
+    equip_staff()
+  :
+    // Try to heal while attacking from afar
+    equip_ranged_healing()
+  ?hp <= 10
+    activate potion
+  loadouts.healwalk()
+
+?loc = fungus_forest_boss  // Boss room
+  ?foe = mushroom_boss_skinny  // Enoki
+    equip_staff()
+  :?foe = mushroom_boss // Angry or Morel
+    ?foe.distance >= 6
+      // Morel's hand keeps you at distance 5
+      equip_dashing()
+    :?foe.armor > 0
+      equip_armor_piercing()
+    :
+      equip_melee()
+  ?hp <= 10
+    activate potion
+  loadouts.healwalk()
